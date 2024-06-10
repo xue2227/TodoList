@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import StatusOption from "./StatusOption";
 import AddTaskModal from "./AddTaskModal";
-import EditTaskModal from "./EditTaskModal";
 import { Task } from "../types";
 
 interface EditMenuProps {
@@ -32,7 +31,7 @@ const EditMenu: React.FC<EditMenuProps> = ({ onEdit, onDelete}) => {
       {isOpen && (
         <div className="absolute right-[-20px] top-[20px] text-xxs bg-white border border-amber-300 flex flex-col items-start w-10 z-10">
           <button
-            onClick={() => onEdit(task)}
+            onClick={onEdit}
             className="text-gray-500 p-1 w-full text-left"
           >
             Edit
@@ -56,16 +55,11 @@ const TodoList = () => {
     const savedTasks = localStorage.getItem("taskList");
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
-  const [editingTask, setEditingTask] = useState(null);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const handleEditTask = (task) => {
-    setEditingTask(task);
-    setIsEditModalOpen(true);
-  };
+
 
   const handleDeleteTask = (taskId: number) => {
-    setTasks(tasks.filter((t) => t.id !== taskId));
+    setTasks(tasks.filter((t:Task) => t.id !== taskId));
   };
 
   // 當任務列表改變時，將新的任務列表儲存到 localStorage
@@ -87,12 +81,7 @@ const TodoList = () => {
           onTaskAdded={handleTaskAdded}
         />
       )}
-      {isEditModalOpen && (
-        <EditTaskModal
-          task={editingTask}
-          onClose={() => setIsEditModalOpen(false)}
-        />
-      )}
+
       <div className="flex items-center w-full ">
         <input
           type="text"
@@ -176,7 +165,7 @@ const TodoList = () => {
                 </div>
               )}
               <EditMenu
-                onEdit={handleEditTask}
+                onEdit={() => {console.log('edit')}}
                 onDelete={() => {
                   handleDeleteTask(task.id);
                 }}
