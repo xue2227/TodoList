@@ -8,5 +8,15 @@ export default {
       },
     },
   },
+  options: {
+      safelist: [
+        'text-gray-500',
+        'bg-gray-500',
+        'text-yellow-500',
+        'bg-yellow-500',
+        'text-green-500',
+        'bg-green-500',
+      ],
+    },
   plugins: [],
 };

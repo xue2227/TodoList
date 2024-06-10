@@ -81,7 +81,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ onClose,onTaskAdded }) => {
   );
 };
 
-const StatusOption: React.FC<StatusOptionProps> = ({ color, state, setState, setShowSelector,selectedTask }) => {
+const StatusOption: React.FC<StatusOptionProps> = ({ state, setState, setShowSelector,selectedTask }) => {
   const handleClick = () => {
     // Get the current tasks from local storage
     const currentTasks = JSON.parse(localStorage.getItem('taskList') || '[]');
@@ -105,10 +105,22 @@ const StatusOption: React.FC<StatusOptionProps> = ({ color, state, setState, set
 
   return (
     <div
-      className={`flex items-center cursor-pointer hover:bg-${color} p-1`}
+      className={`flex items-center cursor-pointer p-1 ${
+        state === "Todo"
+          ? "text-gray-500"
+          : state === "In Progress"
+          ? "text-yellow-500"
+          : "text-green-500"
+      } `}
       onClick={handleClick}
     >
-      <div className={`w-1 h-1  bg-${color} m-1`}></div>
+      <div className={`w-1 h-1 ${
+          state === "Todo"
+            ? "bg-gray-500"
+            : state === "In Progress"
+            ? "bg-yellow-500"
+            : "bg-green-500"
+        } m-1`}></div>
       {state}
     </div>
   );
