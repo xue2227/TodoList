@@ -1,5 +1,4 @@
 interface StatusOptionProps {
-  color: string;
   state: string;
   setState: React.Dispatch<React.SetStateAction<string>>;
   setShowSelector: React.Dispatch<React.SetStateAction<boolean>>;

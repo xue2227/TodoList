@@ -15,3 +15,8 @@ export interface Task {
   id: number;
   state: string;
 }
+export interface EditTaskModalProps {
+  task: Task;
+  onClose: () => void;
+  onTaskUpdated: () => void;
+}
