@@ -1,15 +1,4 @@
-interface StatusOptionProps {
-  state: string;
-  setState: React.Dispatch<React.SetStateAction<string>>;
-  setShowSelector: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedTask: number | null;
-}
-interface Task {
-  title: string;
-  content: string;
-  id: number;
-  state: string;
-}
+import { Task,StatusOptionProps } from "../types";
 
 const StatusOption: React.FC<StatusOptionProps> = ({ state, setState, setShowSelector,selectedTask }) => {
   const handleClick = () => {

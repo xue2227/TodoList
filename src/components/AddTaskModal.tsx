@@ -25,7 +25,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ onClose,onTaskAdded }) => {
 
   return (
     <div
-      className="z-10 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      className="z-50 fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
       onClick={onClose}
     >
       <div

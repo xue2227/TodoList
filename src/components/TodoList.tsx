@@ -3,32 +3,41 @@ import StatusOption from "./StatusOption";
 import AddTaskModal from "./AddTaskModal";
 import EditOption from "./EditOption";
 import { Task } from "../types";
-
+import EditTaskModal from "./EditTaskModal";
 
 export default function TodoList() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null); // 新增状态
   const [tasks, setTasks] = useState(() => {
     // 從 localStorage 獲取初始任務列表
     const savedTasks = localStorage.getItem("taskList");
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
 
-
-
-  const handleDeleteTask = (taskId: number) => {
-    setTasks(tasks.filter((t:Task) => t.id !== taskId));
+  const handleTaskAdded = () => {
+    const savedTasks = localStorage.getItem("taskList");
+    setTasks(savedTasks ? JSON.parse(savedTasks) : []);
   };
+  const handleDeleteTask = (taskId: number) => {
+    setTasks(tasks.filter((t: Task) => t.id !== taskId));
+  };
+
+  const handleEditTask = (taskId: number) => {
+    setEditingTaskId(taskId);
+    setIsEditModalOpen(true);
+  };
+  const finishEdit = () => {
+    const savedTasks = localStorage.getItem("taskList");
+    setTasks(savedTasks ? JSON.parse(savedTasks) : []);
+  };
+
+  const [selectedTask, setSelectedTask] = useState<number | null>(null);
 
   // 當任務列表改變時，將新的任務列表儲存到 localStorage
   useEffect(() => {
     localStorage.setItem("taskList", JSON.stringify(tasks));
   }, [tasks]);
-  const [selectedTask, setSelectedTask] = useState<number | null>(null);
-
-  const handleTaskAdded = () => {
-    const savedTasks = localStorage.getItem("taskList");
-    setTasks(savedTasks ? JSON.parse(savedTasks) : []);
-  };
 
   return (
     <div className="w-[20rem] flex flex-col bg-white border-2 border-amber-300">
@@ -84,8 +93,8 @@ export default function TodoList() {
                   task.state === "Todo"
                     ? "text-gray-500"
                     : task.state === "In Progress"
-                    ? "text-yellow-500"
-                    : "text-green-500"
+                      ? "text-yellow-500"
+                      : "text-green-500"
                 }`}
               >
                 <div
@@ -93,8 +102,8 @@ export default function TodoList() {
                     task.state === "Todo"
                       ? "bg-gray-500"
                       : task.state === "In Progress"
-                      ? "bg-yellow-500"
-                      : "bg-green-500"
+                        ? "bg-yellow-500"
+                        : "bg-green-500"
                   } m-1`}
                 ></div>
                 {task.state}
@@ -121,8 +130,18 @@ export default function TodoList() {
                   />
                 </div>
               )}
+
+              {isEditModalOpen && (
+                <EditTaskModal
+                  taskId={editingTaskId}
+                  onClose={() => setIsEditModalOpen(false)}
+                  finishEdit={() => finishEdit()}
+                />
+              )}
               <EditOption
-                onEdit={() => {console.log('edit')}}
+                onEdit={() => {
+                  handleEditTask(task.id);
+                }}
                 onDelete={() => {
                   handleDeleteTask(task.id);
                 }}
@@ -135,9 +154,3 @@ export default function TodoList() {
     </div>
   );
 }
-
-
-
-
-
-
