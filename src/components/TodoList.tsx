@@ -6,14 +6,18 @@ import { Task } from "../types";
 import EditTaskModal from "./EditTaskModal";
 
 export default function TodoList() {
-  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingTaskId, setEditingTaskId] = useState<number | null>(null); // 新增状态
+  const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [tasks, setTasks] = useState(() => {
     // 從 localStorage 獲取初始任務列表
     const savedTasks = localStorage.getItem("taskList");
     return savedTasks ? JSON.parse(savedTasks) : [];
   });
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null); 
+  
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const filteredTasks:Task[] = tasks.filter((task: Task) => task.title.toLowerCase().includes(searchTerm.toLowerCase()));
+
 
   const handleTaskAdded = () => {
     const savedTasks = localStorage.getItem("taskList");
@@ -52,6 +56,8 @@ export default function TodoList() {
         <input
           type="text"
           placeholder="Search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
           className="border-2 border-amber-300 p-2 m-2 mr-0 h-10 flex-grow focus:outline-none caret-amber-500 focus:shadow-inner focus:shadow-gray-300"
         />
         <button
@@ -76,7 +82,7 @@ export default function TodoList() {
       </div>
 
       <ul className="bg-gray-100 shadow-inner shadow-gray-300 m-2 rounded-sm  min-h-[20rem] max-h-60 overflow-scroll  ">
-        {tasks.map((task: Task) => (
+        {filteredTasks.map((task: Task) => (
           <li
             className="h-[4rem] p-2 m-2 bg-white flex flex-col pt-[6px]"
             key={task.id}
