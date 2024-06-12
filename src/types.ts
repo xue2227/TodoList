@@ -19,3 +19,8 @@ export interface EditTaskModalProps {
   onClose: () => void;
   finishEdit(): void;
 }
+
+export interface EditOptionProps {
+  onEdit: () => void;
+  onDelete: () => void;
+}
